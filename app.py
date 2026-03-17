@@ -102,9 +102,9 @@ class BoseRemoteApp:
         self.device_var = tk.StringVar(value=self._device_label())
 
         self.root.title(config.window_title)
-        self.root.geometry("440x520")
-        self.root.minsize(420, 480)
-        self.root.configure(bg="#f4f1ea")
+        self.root.geometry("420x560")
+        self.root.minsize(380, 520)
+        self.root.configure(bg="#000000")
 
         self._build_ui()
 
@@ -122,8 +122,8 @@ class BoseRemoteApp:
             self.root,
             text="Bose 3-2-1 IR Control",
             font=("Helvetica", 18, "bold"),
-            bg="#f4f1ea",
-            fg="#1f2933",
+            bg="#000000",
+            fg="#ffffff",
         )
         title.pack(pady=(24, 8))
 
@@ -131,12 +131,12 @@ class BoseRemoteApp:
             self.root,
             textvariable=self.device_var,
             font=("Helvetica", 10),
-            bg="#f4f1ea",
-            fg="#52606d",
+            bg="#000000",
+            fg="#ffffff",
         )
         subtitle.pack(pady=(0, 18))
 
-        mode_frame = tk.Frame(self.root, bg="#f4f1ea")
+        mode_frame = tk.Frame(self.root, bg="#000000")
         mode_frame.pack(fill="x", padx=24, pady=(0, 16))
 
         mode_toggle = tk.Checkbutton(
@@ -145,79 +145,63 @@ class BoseRemoteApp:
             variable=self.test_mode_var,
             command=self._toggle_test_mode,
             font=("Helvetica", 10, "bold"),
-            bg="#f4f1ea",
-            fg="#1f2933",
-            activebackground="#f4f1ea",
-            selectcolor="#f4f1ea",
+            bg="#000000",
+            fg="#ffffff",
+            activebackground="#000000",
+            activeforeground="#ffffff",
+            selectcolor="#000000",
         )
         mode_toggle.pack(anchor="w")
 
-        buttons_frame = tk.Frame(self.root, bg="#f4f1ea")
-        buttons_frame.pack(fill="x", padx=24)
+        buttons_frame = tk.Frame(self.root, bg="#000000")
+        buttons_frame.pack(fill="both", expand=False, padx=24, pady=(8, 0))
 
-        self._add_button(buttons_frame, "power_on", "Power On", "#1f7a8c")
-        self._add_button(buttons_frame, "volume_up", "Volume +", "#2d6a4f")
-        self._add_button(buttons_frame, "volume_down", "Volume -", "#bc4749")
+        volume_frame = tk.Frame(buttons_frame, bg="#000000")
+        volume_frame.pack(fill="x", pady=(0, 18))
+        volume_frame.grid_columnconfigure(0, weight=1)
+        volume_frame.grid_columnconfigure(1, weight=1)
 
-        status = tk.Label(
-            self.root,
-            textvariable=self.status_var,
-            wraplength=300,
-            justify="center",
-            font=("Helvetica", 10),
-            bg="#f4f1ea",
-            fg="#334e68",
+        self._add_button(volume_frame, "volume_down", "Volume -").grid(
+            row=0, column=0, padx=(0, 8), sticky="nsew"
         )
-        status.pack(padx=24, pady=(20, 8))
-
-        log_title = tk.Label(
-            self.root,
-            text="Журнал команд",
-            font=("Helvetica", 11, "bold"),
-            bg="#f4f1ea",
-            fg="#1f2933",
+        self._add_button(volume_frame, "volume_up", "Volume +").grid(
+            row=0, column=1, padx=(8, 0), sticky="nsew"
         )
-        log_title.pack(padx=24, pady=(10, 6), anchor="w")
+        self._add_button(buttons_frame, "power_on", "Power On").pack(fill="x")
 
         self.log_text = tk.Text(
             self.root,
             height=8,
             font=("Courier", 10),
-            bg="#fffdf8",
-            fg="#243b53",
+            bg="#000000",
+            fg="#ffffff",
+            insertbackground="#ffffff",
             relief="solid",
             borderwidth=1,
         )
-        self.log_text.pack(fill="both", expand=True, padx=24, pady=(0, 16))
+        self.log_text.pack(fill="both", expand=True, padx=24, pady=(20, 16))
         self.log_text.insert("end", "Приложение запущено.\n")
         self.log_text.configure(state="disabled")
 
-        hint = tk.Label(
-            self.root,
-            text="Для отладки интерфейса оставьте тестовый режим включенным.",
-            wraplength=300,
-            justify="center",
-            font=("Helvetica", 9),
-            bg="#f4f1ea",
-            fg="#7b8794",
-        )
-        hint.pack(padx=24, pady=(0, 16))
-
-    def _add_button(self, parent: tk.Frame, command_name: str, label: str, color: str) -> None:
+    def _add_button(self, parent: tk.Frame, command_name: str, label: str) -> tk.Button:
         button = tk.Button(
             parent,
             text=label,
             font=("Helvetica", 14, "bold"),
-            bg=color,
-            fg="white",
-            activebackground=color,
-            activeforeground="white",
-            relief="flat",
+            bg="#000000",
+            fg="#ffffff",
+            activebackground="#111111",
+            activeforeground="#ffffff",
+            relief="solid",
+            borderwidth=2,
+            highlightthickness=1,
+            highlightbackground="#ffffff",
+            highlightcolor="#ffffff",
             padx=12,
-            pady=12,
+            pady=18,
             command=lambda: self._send_async(command_name),
         )
-        button.pack(fill="x", pady=8)
+        return button
 
     def _send_async(self, command_name: str) -> None:
         thread = threading.Thread(target=self._send_command, args=(command_name,), daemon=True)
