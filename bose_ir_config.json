@@ -1,0 +1,24 @@
+{
+  "window_title": "Bose 3-2-1 Controller",
+  "ir_device": "/dev/lirc0",
+  "test_mode": true,
+  "notes": [
+    "Эти коды добавлены как стартовая конфигурация.",
+    "Для Bose используется формат, близкий к NEC. При необходимости замените scancode или raw.",
+    "Если ваша модель 3-2-1 использует другие коды, снимите их с оригинального пульта и обновите этот файл."
+  ],
+  "buttons": {
+    "power_on": {
+      "protocol": "nec",
+      "scancode": "0x88774CB3"
+    },
+    "volume_up": {
+      "protocol": "nec",
+      "scancode": "0x887703FC"
+    },
+    "volume_down": {
+      "protocol": "nec",
+      "scancode": "0x887702FD"
+    }
+  }
+}
