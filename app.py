@@ -10,6 +10,7 @@ import tkinter as tk
 from dataclasses import dataclass
 from datetime import datetime
 from pathlib import Path
+from tempfile import NamedTemporaryFile
 from tkinter import messagebox
 from typing import Any
 
@@ -60,8 +61,12 @@ class IrCtlTransmitter:
         if command.protocol == "raw":
             if not command.raw:
                 raise ValueError("Raw command is empty.")
-            pulse_spec = " ".join(self._format_raw(command.raw))
-            args = ["ir-ctl", "--device", self.ir_device, "--send", pulse_spec]
+            with NamedTemporaryFile("w", encoding="utf-8", delete=True) as temp_file:
+                temp_file.write("\n".join(self._format_raw(command.raw)))
+                temp_file.write("\n")
+                temp_file.flush()
+                args = ["ir-ctl", "--device", self.ir_device, "--send", temp_file.name]
+                subprocess.run(args, check=True, capture_output=True, text=True)
         else:
             if not command.scancode:
                 raise ValueError("Scancode is empty.")
@@ -69,11 +74,10 @@ class IrCtlTransmitter:
                 "ir-ctl",
                 "--device",
                 self.ir_device,
-                "--send",
+                "--scancode",
                 f"{command.protocol}:{command.scancode}",
             ]
-
-        subprocess.run(args, check=True, capture_output=True, text=True)
+            subprocess.run(args, check=True, capture_output=True, text=True)
 
     @staticmethod
     def _format_raw(raw: list[int]) -> list[str]:
