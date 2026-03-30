@@ -1,0 +1,23 @@
+shell_command:
+  bose_321_power_on: "ir-ctl -d /dev/lirc0 -S nec:0x88774CB3"
+  bose_321_volume_up: "ir-ctl -d /dev/lirc0 -S nec:0x887703FC"
+  bose_321_volume_down: "ir-ctl -d /dev/lirc0 -S nec:0x887702FD"
+
+script:
+  bose_321_power_on:
+    alias: Bose 3-2-1 Power On
+    mode: single
+    sequence:
+      - action: shell_command.bose_321_power_on
+
+  bose_321_volume_up:
+    alias: Bose 3-2-1 Volume Up
+    mode: single
+    sequence:
+      - action: shell_command.bose_321_volume_up
+
+  bose_321_volume_down:
+    alias: Bose 3-2-1 Volume Down
+    mode: single
+    sequence:
+      - action: shell_command.bose_321_volume_down

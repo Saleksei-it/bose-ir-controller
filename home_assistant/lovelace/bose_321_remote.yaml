@@ -1,0 +1,70 @@
+type: custom:button-card
+styles:
+  card:
+    - background: "#000000"
+    - border-radius: 20px
+    - padding: 20px
+    - box-shadow: none
+custom_fields:
+  remote:
+    card:
+      type: vertical-stack
+      cards:
+        - type: grid
+          columns: 2
+          square: false
+          cards:
+            - type: custom:button-card
+              name: Volume -
+              tap_action:
+                action: call-service
+                service: script.bose_321_volume_down
+              styles:
+                card:
+                  - background: "#000000"
+                  - border: 2px solid #ffffff
+                  - border-radius: 18px
+                  - height: 88px
+                  - box-shadow: none
+                name:
+                  - color: "#ffffff"
+                  - font-size: 22px
+                  - font-weight: 700
+
+            - type: custom:button-card
+              name: Volume +
+              tap_action:
+                action: call-service
+                service: script.bose_321_volume_up
+              styles:
+                card:
+                  - background: "#000000"
+                  - border: 2px solid #ffffff
+                  - border-radius: 18px
+                  - height: 88px
+                  - box-shadow: none
+                name:
+                  - color: "#ffffff"
+                  - font-size: 22px
+                  - font-weight: 700
+
+        - type: custom:button-card
+          name: Power On
+          tap_action:
+            action: call-service
+            service: script.bose_321_power_on
+          styles:
+            card:
+              - margin-top: 14px
+              - background: "#000000"
+              - border: 2px solid #ffffff
+              - border-radius: 18px
+              - height: 96px
+              - box-shadow: none
+            name:
+              - color: "#ffffff"
+              - font-size: 24px
+              - font-weight: 700
+
+show_name: false
+show_icon: false
